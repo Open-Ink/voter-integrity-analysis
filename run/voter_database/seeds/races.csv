@@ -1,0 +1,12 @@
+
+    
+    
+    truncate table "DBT_VOTER_DATA"."LOOKUPS"."RACES";
+    -- dbt seed --
+    
+            insert into DBT_VOTER_DATA.lookups.races (Code, Name) values
+            (%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s),(%s,%s)
+        
+
+;
+  
