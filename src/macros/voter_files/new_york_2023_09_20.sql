@@ -1,0 +1,143 @@
+{% macro import_new_york_voters() %}
+
+CREATE TABLE IF NOT EXISTS RAW.new_york_voters_2023_09_20
+(
+    LAST_NAME          TEXT,
+    FIRST_NAME         TEXT,
+    MIDDLE_NAME        TEXT,
+    NAME_SUFFIX        TEXT,
+    R_ADD_NUMBER       TEXT,
+    R_HALF_CODE        TEXT,
+    R_PRE_DIRECTION    TEXT,
+    R_STREET_NAME      TEXT,
+    R_POST_DIRECTION   TEXT,
+    R_APARTMENT_TYPE   TEXT,
+    R_APARTMENT        TEXT,
+    R_ADDR_NON_STD     TEXT,
+    R_CITY             TEXT,
+    R_ZIP5             TEXT,
+    R_ZIP4             TEXT,
+    MAIL_ADD_1         TEXT,
+    MAIL_ADD_2         TEXT,
+    MAIL_ADD_3         TEXT,
+    MAIL_ADD_4         TEXT,
+    DOB                TEXT,
+    GENDER             TEXT,
+    ENROLLMENT         TEXT,
+    OTHER_PARTY        TEXT,
+    COUNTY_CODE_NUMBER TEXT,
+    ED_NUMBER          TEXT,
+    LD_NUMBER          TEXT,
+    TOWN_CITY          TEXT,
+    WARD               TEXT,
+    CD_NUMBER          TEXT,
+    SD_NUMBER          TEXT,
+    AD_NUMBER          TEXT,
+    LAST_VOTER_DATE    TEXT,
+    PREV_YEAR_VOTED    TEXT,
+    PREV_COUNTY        TEXT,
+    PREV_ADDRESS       TEXT,
+    PREV_NAME          TEXT,
+    COUNTY_VR_NUMBER   TEXT,
+    REG_DATE           TEXT,
+    VR_SOURCE          TEXT,
+    ID_REQUIRED        TEXT,
+    ID_MET             TEXT,
+    STATUS             TEXT,
+    REASON_CODE        TEXT,
+    INACT_DATE         TEXT,
+    PURGE_DATE         TEXT,
+    SBOE_ID            TEXT,
+    Voter_History      TEXT
+);
+
+COPY INTO RAW.new_york_voters_2023_09_20 FROM '@VOTER_FILES/new york/raw_data/file_date=2023_09_20/'
+    FILE_FORMAT = (
+        TYPE = 'CSV', FIELD_OPTIONALLY_ENCLOSED_BY = '"', FIELD_DELIMITER = ',',
+        SKIP_HEADER = 1, ESCAPE_UNENCLOSED_FIELD = NONE, TRIM_SPACE = TRUE,
+        EMPTY_FIELD_AS_NULL = TRUE, NULL_IF = ('NULL', '')
+        ENCODING = 'ISO-8859-1'
+        )
+    ON_ERROR = 'CONTINUE';
+
+CREATE TABLE IF NOT EXISTS RAW.new_york_ncoa_results_2023_09_20
+(
+    input_voter_id                      TEXT,
+    input_first_name                    TEXT,
+    input_middle_name                   TEXT,
+    input_last_name                     TEXT,
+    input_suffix                        TEXT,
+    input_address_line1                 TEXT,
+    input_address_line2                 TEXT,
+    input_city                          TEXT,
+    input_county_code                   TEXT,
+    input_zip_code5                     TEXT,
+    input_zip_code4                     TEXT,
+    input_state                         TEXT,
+    input_countyname                    TEXT,
+    household_position                  TEXT,
+    name_id                             TEXT,
+    individual_record_id                TEXT,
+    first_name                          TEXT,
+    last_name                           TEXT,
+    company_name                        TEXT,
+    street_number                       TEXT,
+    street_pre_direction                TEXT,
+    street_name                         TEXT,
+    street_post_direction               TEXT,
+    street_suffix                       TEXT,
+    unit_type                           TEXT,
+    unit_number                         TEXT,
+    box_number                          TEXT,
+    city_name                           TEXT,
+    state_code                          TEXT,
+    postal_code                         TEXT,
+    postal_code_extension               TEXT,
+    carrier_route                       TEXT,
+    address_status                      TEXT,
+    error_number                        TEXT,
+    address_type                        TEXT,
+    delivery_point                      TEXT,
+    check_digit                         TEXT,
+    delivery_point_verification         TEXT,
+    delivery_point_verification_notes   TEXT,
+    vacant                              TEXT,
+    congressional_district_code         TEXT,
+    area_code                           TEXT,
+    latitude                            TEXT,
+    longitude                           TEXT,
+    time_zone                           TEXT,
+    county_name                         TEXT,
+    county_fips                         TEXT,
+    state_fips                          TEXT,
+    barcode                             TEXT,
+    locatable_address_conversion_system TEXT,
+    line_of_travel                      TEXT,
+    ascending_or_descending             TEXT,
+    move_applied                        TEXT,
+    move_type                           TEXT,
+    move_date                           TEXT,
+    move_distance                       TEXT,
+    match_flag                          TEXT,
+    nxi                                 TEXT,
+    ank                                 TEXT,
+    residential_delivery_indicator      TEXT,
+    record_type                         TEXT,
+    country_code                        TEXT,
+    address_line_1                      TEXT,
+    address_line_2                      TEXT,
+    address_id                          TEXT,
+    household_id                        TEXT,
+    individual_id                       TEXT
+);
+
+COPY INTO RAW.new_york_ncoa_results_2023_09_20 FROM '@VOTER_FILES/new york/ncoa_data/file_date=2023_09_20/'
+    FILE_FORMAT = (
+        TYPE = 'CSV', FIELD_OPTIONALLY_ENCLOSED_BY = '"', FIELD_DELIMITER = ',',
+        SKIP_HEADER = 1, ESCAPE_UNENCLOSED_FIELD = NONE, TRIM_SPACE = TRUE,
+        EMPTY_FIELD_AS_NULL = TRUE, NULL_IF = ('NULL', '')
+        )
+    ON_ERROR = 'ABORT_STATEMENT'
+
+
+{% endmacro %}

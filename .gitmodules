@@ -1,0 +1,3 @@
+[submodule "voter-data-normalization"]
+	path = voter-data-normalization
+	url = git@github.com:Open-Ink/voter-data-normalization.git

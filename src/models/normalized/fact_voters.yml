@@ -1,0 +1,69 @@
+version: 2
+
+models:
+  - name: "fact_voters"
+    columns:
+      - name: STATE_CODE
+        type: TEXT
+        tests:
+          - not_null
+      - name: COUNTY_ID
+        type: TEXT
+        tests:
+          - not_null
+      - name: VOTER_ID
+        type: TEXT
+        tests:
+          - not_null
+      - name: SK_ADDRESS_ID
+        type: TEXT
+        tests:
+          - relationships:
+              to: ref("dim_address")
+              field: SK_ADDRESS_ID
+      - name: SK_VOTER_INFO_ID
+        type: TEXT
+        tests:
+          - unique
+          - not_null
+      - name: DID_MOVE
+        type: NUMBER
+        tests:
+          - not_null
+          - accepted_values:
+              values: [ 0, 1 ]
+      - name: DID_MOVE_TO_ANOTHER_STATE
+        type: NUMBER
+        tests:
+          - not_null
+          - accepted_values:
+              values: [ 0, 1 ]
+      - name: DID_MOVE_TO_ANOTHER_COUNTY
+        type: NUMBER
+        tests:
+          - not_null
+          - accepted_values:
+              values: [ 0, 1 ]
+      - name: DID_VOTE_AFTER_MOVING
+        type: NUMBER
+        tests:
+          - accepted_values:
+              values: [ 0, 1 ]
+      - name: IS_ADDRESS_INVALID
+        type: NUMBER
+        tests:
+          - not_null
+          - accepted_values:
+              values: [ 0, 1 ]
+      - name: IS_ADDRESS_VACANT
+        type: NUMBER
+        tests:
+          - not_null
+          - accepted_values:
+              values: [ 0, 1 ]
+      - name: IS_ADDRESS_COMMERCIAL
+        type: NUMBER
+        tests:
+          - not_null
+          - accepted_values:
+              values: [ 0, 1 ]

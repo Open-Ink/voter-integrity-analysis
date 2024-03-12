@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: "dim_address"
+    columns:
+      - name: sk_address_id
+        type: TEXT
+        tests:
+          - unique
+          - not_null
+      - name: line_1
+        type: TEXT
+      - name: line_2
+        type: TEXT
+      - name: city
+        type: TEXT
+      - name: state
+        type: TEXT
+        tests:
+          - not_null
+      - name: zipcode
+        type: TEXT
+      - name: country
+        type: TEXT
+      - name: address_type
+        type: TEXT
+        tests:
+          - accepted_values:
+              values: ['RESIDENCE', 'MAILING']

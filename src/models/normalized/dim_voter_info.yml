@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: "dim_voter_info"
+    columns:
+      - name: SK_VOTER_INFO_ID
+        type: TEXT
+        tests:
+          - unique
+      - name: NAME_PREFIX
+        type: TEXT
+      - name: MIDDLE_NAME
+        type: TEXT
+      - name: LAST_NAME
+        type: TEXT
+      - name: NAME_SUFFIX
+        type: TEXT
+      - name: VOTER_STATUS
+        type: TEXT
+      - name: REGISTRATION_DATE
+        type: DATE
+      - name: MOVE_DATE
+        type: DATE
+      - name: LAST_VOTE_DATE
+        type: DATE
+      - name: LAST_PARTY_VOTED
+        type: TEXT

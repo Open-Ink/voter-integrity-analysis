@@ -1,0 +1,147 @@
+{% macro import_colorado_voters() %}
+
+
+CREATE TABLE IF NOT EXISTS RAW.colorado_voters_2023_11_30
+(
+    voter_id                TEXT,
+    county_code             TEXT,
+    county                  TEXT,
+    last_name               TEXT,
+    first_name              TEXT,
+    middle_name             TEXT,
+    name_suffix             TEXT,
+    voter_name              TEXT,
+    status_code             TEXT,
+    precinct_name           TEXT,
+    address_library_id      TEXT,
+    house_num               TEXT,
+    house_suffix            TEXT,
+    pre_dir                 TEXT,
+    street_name             TEXT,
+    street_type             TEXT,
+    post_dir                TEXT,
+    unit_type               TEXT,
+    unit_num                TEXT,
+    residential_address     TEXT,
+    residential_city        TEXT,
+    residential_state       TEXT,
+    residential_zip_code    TEXT,
+    residential_zip_plus    TEXT,
+    effective_date          TEXT,
+    registration_date       TEXT,
+    status                  TEXT,
+    status_reason           TEXT,
+    birth_year              TEXT,
+    gender                  TEXT,
+    precinct                TEXT,
+    split                   TEXT,
+    voter_status_id         TEXT,
+    party                   TEXT,
+    preference              TEXT,
+    party_affiliation_date  TEXT,
+    phone_num               TEXT,
+    mail_addr1              TEXT,
+    mail_addr2              TEXT,
+    mail_addr3              TEXT,
+    mailing_city            TEXT,
+    mailing_state           TEXT,
+    mailing_zip_code        TEXT,
+    mailing_zip_plus        TEXT,
+    mailing_country         TEXT,
+    spl_id                  TEXT,
+    permanent_mail_in_voter TEXT,
+    congressional           TEXT,
+    state_senate            TEXT,
+    state_house             TEXT,
+    id_required             TEXT,
+    avr                     TEXT
+);
+
+CREATE TABLE IF NOT EXISTS RAW.colorado_ncoa_results_2023_11_30
+(
+    input_voter_id                      TEXT,
+    input_county                        TEXT,
+    input_last_name                     TEXT,
+    input_first_name                    TEXT,
+    input_middle_name                   TEXT,
+    input_name_suffix                   TEXT,
+    input_addressline2                  TEXT,
+    input_residential_address           TEXT,
+    input_residential_city              TEXT,
+    input_residential_state             TEXT,
+    input_residential_zip_code          TEXT,
+    household_position                  TEXT,
+    name_id                             TEXT,
+    individual_record_id                TEXT,
+    first_name                          TEXT,
+    last_name                           TEXT,
+    company_name                        TEXT,
+    street_number                       TEXT,
+    street_pre_direction                TEXT,
+    street_name                         TEXT,
+    street_post_direction               TEXT,
+    street_suffix                       TEXT,
+    unit_type                           TEXT,
+    unit_number                         TEXT,
+    box_number                          TEXT,
+    city_name                           TEXT,
+    state_code                          TEXT,
+    postal_code                         TEXT,
+    postal_code_extension               TEXT,
+    carrier_route                       TEXT,
+    address_status                      TEXT,
+    error_number                        TEXT,
+    address_type                        TEXT,
+    delivery_point                      TEXT,
+    check_digit                         TEXT,
+    delivery_point_verification         TEXT,
+    delivery_point_verification_notes   TEXT,
+    vacant                              TEXT,
+    congressional_district_code         TEXT,
+    area_code                           TEXT,
+    latitude                            TEXT,
+    longitude                           TEXT,
+    time_zone                           TEXT,
+    county_name                         TEXT,
+    county_fips                         TEXT,
+    state_fips                          TEXT,
+    barcode                             TEXT,
+    locatable_address_conversion_system TEXT,
+    line_of_travel                      TEXT,
+    ascending_or_descending             TEXT,
+    move_applied                        TEXT,
+    move_type                           TEXT,
+    move_date                           TEXT,
+    move_distance                       TEXT,
+    match_flag                          TEXT,
+    nxi                                 TEXT,
+    ank                                 TEXT,
+    residential_delivery_indicator      TEXT,
+    record_type                         TEXT,
+    country_code                        TEXT,
+    address_line_1                      TEXT,
+    address_line_2                      TEXT,
+    address_id                          TEXT,
+    household_id                        TEXT,
+    individual_id                       TEXT
+);
+
+COPY INTO RAW.colorado_voters_2023_11_30
+    FROM @VOTER_FILES/colorado/raw_data/file_date=2023_11_30/
+    FILE_FORMAT = (
+        TYPE = 'CSV', FIELD_OPTIONALLY_ENCLOSED_BY = '"', FIELD_DELIMITER = ',',
+        SKIP_HEADER = 1, ESCAPE_UNENCLOSED_FIELD = NONE, TRIM_SPACE = TRUE, REPLACE_INVALID_CHARACTERS = TRUE,
+        EMPTY_FIELD_AS_NULL = TRUE, NULL_IF = ( 'NULL', '')
+        )
+    ON_ERROR = 'CONTINUE';
+
+COPY INTO RAW.colorado_ncoa_results_2023_11_30
+    FROM @VOTER_FILES/colorado/ncoa_results/
+    FILE_FORMAT = (
+        TYPE = 'CSV', FIELD_OPTIONALLY_ENCLOSED_BY = '"', FIELD_DELIMITER = ',',
+        SKIP_HEADER = 1, ESCAPE_UNENCLOSED_FIELD = NONE, TRIM_SPACE = TRUE, REPLACE_INVALID_CHARACTERS = TRUE,
+        EMPTY_FIELD_AS_NULL = TRUE, NULL_IF = ( 'NULL', '')
+        )
+    ON_ERROR = 'ABORT_STATEMENT'
+
+{% endmacro %}

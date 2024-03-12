@@ -1,0 +1,135 @@
+{% macro import_south_carolina_voters() %}
+CREATE TABLE IF NOT EXISTS RAW.south_carolina_voters_2024_01_04
+(
+    county                             TEXT,
+    voter_registration_number          TEXT,
+    first_name                         TEXT,
+    middle_name                        TEXT,
+    last_name                          TEXT,
+    suffix                             TEXT,
+    residence_line_number              TEXT,
+    residence_line_name                TEXT,
+    residence_line_suite               TEXT,
+    residence_city                     TEXT,
+    residence_zipcode                  TEXT,
+    mailing_line_number                TEXT,
+    mailing_line_name                  TEXT,
+    mailing_city                       TEXT,
+    mailing_state                      TEXT,
+    mailing_zipcode                    TEXT,
+    gender                             TEXT,
+    race                               TEXT,
+    registration_date                  TEXT,
+    date_of_birth                      TEXT,
+    date_last_voted                    TEXT,
+    general_election_last_voted        TEXT,
+    general_election_previous_voted    TEXT,
+    democratic_election_last_voted     TEXT,
+    democratic_election_previous_voted TEXT,
+    republican_election_last_voted     TEXT,
+    republican_election_previous_voted TEXT,
+    water_shed_district                TEXT,
+    precinct_code                      TEXT,
+    precinct_name                      TEXT,
+    township                           TEXT,
+    house_district                     TEXT,
+    senate_district                    TEXT,
+    cnty_council_district              TEXT,
+    school_district                    TEXT,
+    city_council_district              TEXT,
+    congressional_district             TEXT,
+    voter_status                       TEXT,
+    municipality_code                  TEXT,
+    municipality_name                  TEXT
+);
+
+CREATE TABLE IF NOT EXISTS RAW.south_carolina_ncoa_results_2024_01_04
+(
+    input_id                            TEXT,
+    input_firstname                     TEXT,
+    input_middle_name                   TEXT,
+    input_last_name                     TEXT,
+    input_suffix                        TEXT,
+    input_address_line_1                TEXT,
+    input_address_line_2                TEXT,
+    input_city                          TEXT,
+    input_state                         TEXT,
+    input_zipcode                       TEXT,
+    input_county                        TEXT,
+    household_position                  TEXT,
+    name_id                             TEXT,
+    individual_record_id                TEXT,
+    first_name                          TEXT,
+    last_name                           TEXT,
+    company_name                        TEXT,
+    street_number                       TEXT,
+    street_pre_direction                TEXT,
+    street_name                         TEXT,
+    street_post_direction               TEXT,
+    street_suffix                       TEXT,
+    unit_type                           TEXT,
+    unit_number                         TEXT,
+    box_number                          TEXT,
+    city_name                           TEXT,
+    state_code                          TEXT,
+    postal_code                         TEXT,
+    postal_code_extension               TEXT,
+    carrier_route                       TEXT,
+    address_status                      TEXT,
+    error_number                        TEXT,
+    address_type                        TEXT,
+    delivery_point                      TEXT,
+    check_digit                         TEXT,
+    delivery_point_verification         TEXT,
+    delivery_point_verification_notes   TEXT,
+    vacant                              TEXT,
+    congressional_district_code         TEXT,
+    area_code                           TEXT,
+    latitude                            TEXT,
+    longitude                           TEXT,
+    time_zone                           TEXT,
+    county_name                         TEXT,
+    county_fips                         TEXT,
+    state_fips                          TEXT,
+    barcode                             TEXT,
+    locatable_address_conversion_system TEXT,
+    line_of_travel                      TEXT,
+    ascending_or_descending             TEXT,
+    move_applied                        TEXT,
+    move_type                           TEXT,
+    move_date                           TEXT,
+    move_distance                       TEXT,
+    match_flag                          TEXT,
+    nxi                                 TEXT,
+    ank                                 TEXT,
+    residential_delivery_indicator      TEXT,
+    record_type                         TEXT,
+    country_code                        TEXT,
+    address_line_1                      TEXT,
+    address_line_2                      TEXT,
+    address_id                          TEXT,
+    household_id                        TEXT,
+    individual_id                       TEXT
+);
+
+COPY INTO RAW.south_carolina_voters_2024_01_04
+    FROM '@VOTER_FILES/south carolina/file_date=2024-01-04/raw_data/'
+    FILE_FORMAT = (
+        TYPE = 'CSV', FIELD_OPTIONALLY_ENCLOSED_BY = '"', FIELD_DELIMITER = ',',
+        SKIP_HEADER = 1, ESCAPE_UNENCLOSED_FIELD = NONE, TRIM_SPACE = TRUE,
+        REPLACE_INVALID_CHARACTERS = TRUE,
+        EMPTY_FIELD_AS_NULL = TRUE, NULL_IF = ( 'NULL', '')
+        )
+    ON_ERROR = 'ABORT_STATEMENT';
+
+COPY INTO RAW.south_carolina_ncoa_results_2024_01_04
+    FROM '@VOTER_FILES/south carolina/file_date=2024-01-04/ncoa_results/'
+    FILE_FORMAT = (
+        TYPE = 'CSV', FIELD_OPTIONALLY_ENCLOSED_BY = '"', FIELD_DELIMITER = ',',
+        SKIP_HEADER = 1, ESCAPE_UNENCLOSED_FIELD = NONE, TRIM_SPACE = TRUE,
+        REPLACE_INVALID_CHARACTERS = TRUE,
+        EMPTY_FIELD_AS_NULL = TRUE, NULL_IF = ( 'NULL', '')
+        )
+    ON_ERROR = 'ABORT_STATEMENT'
+
+{% endmacro %}

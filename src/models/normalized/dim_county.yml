@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: "dim_county"
+    columns:
+      - name: county_id
+        type: TEXT
+        tests:
+          - unique
+      - name: state_code
+        type: TEXT
+        tests:
+          - relationships:
+              to: ref("dim_state")
+              field: code
+      - name: county_code
+        type: TEXT
+        tests:
+          - not_null
+      - name: name
+        type: TEXT
+        tests:
+          - not_null
+      - name: geoid
+        type: TEXT
+        tests:
+          - not_null

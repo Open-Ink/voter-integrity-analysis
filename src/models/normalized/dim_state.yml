@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: "dim_state"
+    columns:
+      - name: code
+        type: TEXT
+        tests:
+          - not_null
+          - unique
+      - name: name
+        type: TEXT
+        tests:
+          - not_null
+      - name: fid
+        type: TEXT
+        tests:
+          - not_null

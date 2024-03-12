@@ -1,0 +1,359 @@
+version: 2
+
+state_ncoa_results: &state_ncoa_results
+  columns:
+    - name: INPUT_FILE_DATE
+      type: DATE
+      description: The date of the file that was processed.
+    - name: INPUT_STATE
+      type: TEXT
+      description: The state the file belonged to.
+    - name: INPUT_COUNTY
+      type: TEXT
+      description: The county of the voter.
+    - name: INPUT_VOTER_ID
+      type: TEXT
+      description: The voter id of the voter.
+    - name: INPUT_LAST_NAME
+      type: TEXT
+      description: The last name of the voter.
+    - name: INPUT_FIRST_NAME
+      type: TEXT
+      description: THe first name of the voter.
+    - name: INPUT_MIDDLE_NAME
+      type: TEXT
+      description: The middle name of the voter
+    - name: INPUT_SUFFIX
+      type: TEXT
+      description: The suffix of the voter. (Jr, Sr etc)
+    - name: INPUT_ADDRESS_LINE_1
+      type: TEXT
+      description: The street address of the voter as in the voter registration file
+    - name: INPUT_ADDRESS_LINE_2
+      type: TEXT
+      description: Address Line 2 of the voter as in the voter registration file.
+    - name: INPUT_RESIDENCE_CITY
+      type: TEXT
+      description: The city of the voter in the voter registration file.
+    - name: INPUT_RESIDENCE_STATE
+      type: TEXT
+      description: The state the voter lives in according to the voter registration file.
+    - name: INPUT_RESIDENCE_ZIPCODE
+      type: TEXT
+      description: The zipcode of the voter according to the voter registration file
+    - name: HOUSEHOLD_POSITION
+      type: TEXT
+      description: Household Position indicates the order in which a record's constituents were screened.
+    - name: NAME_ID,
+      type: TEXT
+      description: A unique identifier given to the records by the TrueNCOA system
+    - name: INDIVIDUAL_RECORD_ID
+      type: TEXT
+    - name: FIRST_NAME
+      type: TEXT
+      description: The first name of the individual in the NCOA system.
+    - name: LAST_NAME
+      type: TEXT
+      description: The last name of the individual in the NCOA system.
+    - name: COMPANY_NAME
+      type: TEXT
+      description: The name of the company in the NCOA system.
+    - name: STREET_NUMBER
+      type: TEXT
+      description: The Primary Address Number for the parsed address.
+    - name: STREET_PRE_DIRECTION
+      type: TEXT
+      description: The Address Pre Direction (W, NE, etc.) for the parsed address.
+    - name: STREET_NAME
+      type: TEXT
+      description: The Street Name for the parsed address.
+    - name: STREET_POST_DIRECTION
+      type: TEXT
+      description: The Address Post Direction (S, SW, etc.) for the parsed address.
+    - name: STREET_SUFFIX
+      type: TEXT
+      description: The Address Suffix (AVE, ST, CT, etc.) for the parsed address.
+    - name: UNIT_TYPE
+      type: TEXT
+      description: Identifies the type of unit (Apartment, Unit, etc.) for the parsed address.
+    - name: UNIT_NUMBER
+      type: TEXT
+      description: Identifies the Unit number for the parsed address.
+    - name: BOX_NUMBER
+      type: TEXT
+      description: Identifies the Private Mailbox Number
+    - name: CITY_NAME
+      type: TEXT
+      description: City Name for the given address.
+    - name: STATE_CODE
+      type: TEXT
+      description: 2-digit State Abbreviation (IL, NY, CA, etc.) for the given address.
+    - name: POSTAL_CODE
+      type: TEXT
+      description: Contains the 5-digit Zip Code for the given address.
+    - name: POSTAL_CODE_EXTENSION
+      type: TEXT
+      description: Contains the +4 Code for the given address.
+    - name: CARRIER_ROUTE
+      type: TEXT
+      description: 4-digit Carrier Route Number indicates a group of mailing addresses that receive the same code to aid in mail delivery efficiency.
+    - name: ADDRESS_STATUS
+      type: TEXT
+      description: |
+        Identifies if an address is Valid, Multi-Matched, or Invalid, and were not matched to the USPS Database.
+        • V - Valid (match to USPS database)
+        • M - Multi-match (typically missing prefix or suffix, such as North or South)
+        • N - Invalid (no match)
+    - name: ERROR_NUMBER
+      type: TEXT
+      description: Error and warning codes that identify what took place during DPV and may be hindering delivery.
+    - name: ADDRESS_TYPE
+      type: TEXT
+      description: |
+        Identifies the different type of delivery address.
+        • F - ZIP+4 Match on the Company Name
+        • G - General Delivery Record
+        • H - High Rise Record
+        • P - PO Box Record
+        • R - Rural Route Record
+        • S - Street Record
+    - name: DELIVERY_POINT
+      type: TEXT
+      description: A 2-digit code that identifies the individual mail delivery location for this address.
+    - name: CHECK_DIGIT
+      type: TEXT
+      description: Check Digit for each deliverable record in the database.
+    - name: DELIVERY_POINT_VERIFICATION
+      type: TEXT
+    - name: DELIVERY_POINT_VERIFICATION_NOTES
+      type: TEXT
+      description: |
+        Delivery Point Verification Footnotes that identify what took place during DPV.
+        • AA - ZIP4 matched
+        • A1 - ZIP4 did not match
+        • BB - HSA_DPV confirmed entire address
+        • BX - PO Box-Only zip codes record
+        • CC - HSA_DPV confirmed address by dropping secondary info
+        • C1 - Secondary number missing from address
+        • DN - Door not accessible
+        • F1 - Military Match
+        • G1 - General Delivery Match
+        • IA - Informed Address Identified
+        • M1 - Primary number missing from address
+        • M3 - Could not confirm address
+        • N1 - HSA_DPV confirmed a highrise or box type address w/o secondary info
+        • ND - Non-Delivery Days
+        • NS - No Secure Location
+        • PB - Identified PO Box street address
+        • PO - PO Box Throwback; indicating delivery is made to PO Box rather than street address.
+        • P1 - Box type address missing box number
+        • P3 - Box number invalid
+        • RR - Input address matched to CMRA (Commercial Mail Receiving Agency) but PMB (Private Mailbox) designator present
+        • R1 - Input address matched to CMRA but PMB designator not present
+        • R7 - R777 Phantom Route Matching. Physical addresses that are assigned to a phantom are not eligible for street delivery.
+        • TA - Confirmed primary address by dropping trailing alphabetic character
+        • U1 - Unique ZIP code match
+    - name: VACANT
+      type: TEXT
+      description: >
+        Indicates if an address has been identified as vacant; this address may have been previously active, 
+        but now has been unoccupied for over 90 days. (Y/N)
+    - name: CONGRESSIONAL_DISTRICT_CODE
+      type: TEXT
+      description: 2-digit Congressional District Code indicates which congressional district each address is located within.
+    - name: AREA_CODE
+      type: TEXT
+      description: Displays the area code for the given address.
+    - name: LATITUDE
+      type: TEXT
+      description: Latitude calculated by zip centroid.
+    - name: LONGITUDE
+      type: TEXT
+      description: Longitude calculated by zip centroid.
+    - name: TIME_ZONE
+      type: TEXT
+      description: Displays the time zone for the given address.
+    - name: COUNTY_NAME
+      type: TEXT
+      description: Displays the name of the county for the given address.
+    - name: COUNTY_FIPS
+      type: TEXT
+      description: >
+        3-digit county federal information processing standards (FIPS) code. 
+        This code helps define geographic locations for public alerting systems.
+    - name: STATE_FIPS
+      type: TEXT
+      description: >
+        2-digit state federal information processing standards (FIPS) code. This code helps define
+        geographic locations for public alerting systems
+    - name: BARCODE
+      type: TEXT
+      description: >
+        Delivery Point Barcode gives a 12-digit number that can be used in the creation of a
+        barcode used for mailings.
+    - name: LOCATABLE_ADDRESS_CONVERSION_SYSTEM
+      type: TEXT
+      description: Locatable Address Conversion System indicator; the change of rural-style addresses to city-style addresses.
+    - name: LINE_OF_TRAVEL
+      type: TEXT
+      description: >
+        The Line of Travel number indicates the first occurrence of delivery made to the add-on
+        range within the carrier route.
+    - name: ASCENDING_OR_DESCENDING
+      type: TEXT
+      description: LOT order indicator gives the approximate delivery order within the sequence number.
+    - name: MOVE_APPLIED
+      type: TEXT
+      description: Contains the date (YYYYMMDD) the record was processed through NCOA.
+    - name: MOVE_TYPE
+      type: TEXT
+      description: |
+        Indicates the type of move on the addressee's change of address order.
+        • I - Individual Match
+        • F - Family Match
+        • B - Business Name Match
+    - name: MOVE_DATE
+      type: DATE
+      description: The date the move was filed with the USPS, in YYYYMM format.
+    - name: MOVE_DISTANCE
+      type: TEXT
+      description: >
+        The distance between the old dwelling unit and the new dwelling unit. This is measured
+        in miles; with up to 9,999 miles and two decimal points included from centroid zip.
+    - name: MATCH_FLAG
+      type: TEXT
+      description: |
+        Flag that indicates the move status applied during NCOA processing.
+        • M - Moved
+        • G - PO Box Closed
+        • K - Moved, left no forwarding address
+        • F - Moved to a Foreign Country
+    - name: NXI
+      type: TEXT
+      description: >
+        Status code returned during NCOA processing; This code identifies if a new address was
+        provided and gives description of why or why not.
+    - name: ANK
+      type: TEXT
+      description: ANK Flag indicates whether a 19-48 Month move took place
+    - name: RESIDENTIAL_DELIVERY_INDICATOR
+      type: TEXT
+      description: Identifies whether a delivery type is classified as Residential. (Y/N)
+    - name: RECORD_TYPE
+      type: TEXT
+      description: |
+        Indicates if an address is considered active, historical, or current by the USPS.
+        • A - Active; no move was applied; may or may not be the current address
+        • C - Current; move was applied, and this is the current record
+        • H - Historical or previous address
+    - name: COUNTRY_CODE
+      type: TEXT
+      description: 2-digit country abbreviation.
+    - name: ADDRESS_LINE_1
+      type: TEXT
+      description: >
+        Identifies the primary address information of the address. This field combines street
+        number, street pre direction, street name, and street post direction.
+    - name: ADDRESS_LINE_2
+      type: TEXT
+      description: >
+        Identifies the secondary address information of the address. This field combines unit
+        type and unit number.
+    - name: ADDRESS_ID
+      type: TEXT
+      description: A unique address identifier for the address.
+    - name: HOUSEHOLD_ID
+      type: TEXT
+      description: A unique identifier for the family.
+    - name: INDIVIDUAL_ID
+      type: TEXT
+      description: A unique identifier for the individual.
+
+
+models:
+  - <<: *state_ncoa_results
+    name: alabama_ncoa_results
+  - <<: *state_ncoa_results
+    name: alaska_ncoa_results
+  - <<: *state_ncoa_results
+    name: arizona_ncoa_results
+  - <<: *state_ncoa_results
+    name: arkansas_ncoa_results
+  - <<: *state_ncoa_results
+    name: california_ncoa_results
+  - <<: *state_ncoa_results
+    name: colorado_ncoa_results
+  - <<: *state_ncoa_results
+    name: connecticut_ncoa_results
+  - <<: *state_ncoa_results
+    name: delaware_ncoa_results
+  - <<: *state_ncoa_results
+    name: district_of_columbia_ncoa_results
+  - <<: *state_ncoa_results
+    name: florida_ncoa_results
+  - <<: *state_ncoa_results
+    name: georgia_ncoa_results
+  - <<: *state_ncoa_results
+    name: idaho_ncoa_results
+  - <<: *state_ncoa_results
+    name: iowa_ncoa_results
+  - <<: *state_ncoa_results
+    name: kansas_ncoa_results
+  - <<: *state_ncoa_results
+    name: louisiana_ncoa_results
+  - <<: *state_ncoa_results
+    name: maryland_ncoa_results
+  - <<: *state_ncoa_results
+    name: michigan_ncoa_results
+  - <<: *state_ncoa_results
+    name: mississippi_ncoa_results
+  - <<: *state_ncoa_results
+    name: missouri_ncoa_results
+  - <<: *state_ncoa_results
+    name: montana_ncoa_results
+  - <<: *state_ncoa_results
+    name: nebraska_ncoa_results
+  - <<: *state_ncoa_results
+    name: nevada_ncoa_results
+  - <<: *state_ncoa_results
+    name: new_hampshire_ncoa_results
+  - <<: *state_ncoa_results
+    name: new_jersey_ncoa_results
+  - <<: *state_ncoa_results
+    name: new_mexico_ncoa_results
+  - <<: *state_ncoa_results
+    name: new_york_ncoa_results
+  - <<: *state_ncoa_results
+    name: north_carolina_ncoa_results
+  - <<: *state_ncoa_results
+    name: ohio_ncoa_results
+  - <<: *state_ncoa_results
+    name: oklahoma_ncoa_results
+  - <<: *state_ncoa_results
+    name: oregon_ncoa_results
+  - <<: *state_ncoa_results
+    name: pennsylvania_ncoa_results
+  - <<: *state_ncoa_results
+    name: rhode_island_ncoa_results
+  - <<: *state_ncoa_results
+    name: south_carolina_ncoa_results
+  - <<: *state_ncoa_results
+    name: south_dakota_ncoa_results
+  - <<: *state_ncoa_results
+    name: tennessee_ncoa_results
+  - <<: *state_ncoa_results
+    name: texas_ncoa_results
+  - <<: *state_ncoa_results
+    name: utah_ncoa_results
+  - <<: *state_ncoa_results
+    name: vermont_ncoa_results
+  - <<: *state_ncoa_results
+    name: virginia_ncoa_results
+  - <<: *state_ncoa_results
+    name: washington_ncoa_results
+  - <<: *state_ncoa_results
+    name: west_virginia_ncoa_results
+  - <<: *state_ncoa_results
+    name: wisconsin_ncoa_results
+  - <<: *state_ncoa_results
+    name: wyoming_ncoa_results
